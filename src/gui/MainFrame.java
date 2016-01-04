@@ -42,6 +42,9 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
+        System.out.println("The main window's width is " + this.getWidth() + " and height is " + this.getHeight());
+        System.out.println("The main window's preferredWidth is " + this.getPreferredSize().getWidth() + " and preferredHeight is " + this.getPreferredSize().getHeight());
+
     }
 
     private void initComponents() {
@@ -65,6 +68,7 @@ public class MainFrame extends JFrame {
         ctrlPane.setPreferredSize(new Dimension(150, 350));
         ctrlPane.setSize(new Dimension(150, 350));
         ctrlPane.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 46));
+        ctrlPane.setBackground(Color.GREEN);
 
         ctrlPane.add(startBtn);
         ctrlPane.add(stopBtn);

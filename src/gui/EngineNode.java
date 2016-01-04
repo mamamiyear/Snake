@@ -9,7 +9,7 @@ import java.awt.*;
  * @author mamamiyear
  *         on 16-1-4.
  */
-public class GameAtom extends JPanel {
+public class EngineNode extends JPanel {
 
     private static final int Width = 7;
     private static final int Heigth = 7;
@@ -41,7 +41,7 @@ public class GameAtom extends JPanel {
 
 
 
-    public GameAtom() {
+    public EngineNode() {
 
 
 
