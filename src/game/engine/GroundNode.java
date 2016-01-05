@@ -1,4 +1,4 @@
-package game.Engine;
+package game.engine;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,7 +9,7 @@ import java.awt.*;
  * @author mamamiyear
  *         on 16-1-4.
  */
-public class EngineNode extends JPanel {
+public class GroundNode extends JPanel {
 
     private static final int WIDTH = 10;
     private static final int HEIGTH = 10;
@@ -20,21 +20,21 @@ public class EngineNode extends JPanel {
     public static final int LOCATION_DOWN = 12;
     public static final int LOCATION_LEFT = 13;
     public static final int LOCATION_RIGHT = 14;
-    private EngineNode upNode;
-    private EngineNode downNode;
-    private EngineNode leftNode;
-    private EngineNode rightNode;
+    private GroundNode upNode;
+    private GroundNode downNode;
+    private GroundNode leftNode;
+    private GroundNode rightNode;
 
 
-    public EngineNode() {
+    public GroundNode() {
 
         super();
-        this.setSize(new Dimension(this.WIDTH, this.HEIGTH));
-        this.setPreferredSize(new Dimension(this.WIDTH, this.HEIGTH));
-        this.setBorder(this.LAND_BORDER);
+        this.setSize(new Dimension(WIDTH, HEIGTH));
+        this.setPreferredSize(new Dimension(WIDTH, HEIGTH));
+        this.setBorder(LAND_BORDER);
     }
 
-    public void setNeighbourNode(int location, EngineNode value) {
+    public void setNeighbourNode(int location, GroundNode value) {
 
         switch (location) {
             case 11:
@@ -55,16 +55,16 @@ public class EngineNode extends JPanel {
         }
     }
 
-    public EngineNode getUpNode() {
+    public GroundNode getUpNode() {
         return upNode;
     }
-    public EngineNode getDownNode() {
+    public GroundNode getDownNode() {
         return downNode;
     }
-    public EngineNode getLeftNode() {
+    public GroundNode getLeftNode() {
         return leftNode;
     }
-    public EngineNode getRightNode() {
+    public GroundNode getRightNode() {
         return rightNode;
     }
 

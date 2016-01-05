@@ -1,9 +1,10 @@
-package game.Gui;
+package game.gui;
 
-import game.Engine.GameEngine;
+import game.engine.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author mamamiyear
@@ -62,6 +63,7 @@ public class MainFrame extends JFrame {
         stopBtn.setPreferredSize(new Dimension(100, 30));
         restartBtn.setPreferredSize(new Dimension(100, 30));
         pauseBtn.setPreferredSize(new Dimension(100, 30));
+        initButtonFunction();
 
         ctrlPane.setPreferredSize(new Dimension(150, 350));
         ctrlPane.setSize(new Dimension(150, 350));
@@ -76,7 +78,16 @@ public class MainFrame extends JFrame {
         container.add(gamePane);
         container.add(ctrlPane);
 
+    }
 
+    private void initButtonFunction() {
+
+        startBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gamePane.move();
+            }
+        });
 
     }
 
