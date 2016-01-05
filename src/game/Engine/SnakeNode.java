@@ -1,6 +1,5 @@
-package gui;
+package game.Engine;
 
-import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -9,10 +8,7 @@ import java.awt.*;
  * @author mamamiyear
  *         on 16-1-4.
  */
-public class EngineNode extends JPanel {
-
-    private static final int Width = 7;
-    private static final int Heigth = 7;
+public class SnakeNode extends EngineNode {
 
     public static final int TO_EAST = 1;
     public static final int TO_WEST = 2;
@@ -38,13 +34,6 @@ public class EngineNode extends JPanel {
     public static final Border FOOD_BORDER = new LineBorder(FOOD_COLOR);
     private Border border;
 
-
-
-
-    public EngineNode() {
-
-
-
-    }
+    private SnakeNode nextNode;
 
 }

@@ -1,4 +1,6 @@
-package gui;
+package game.Gui;
+
+import game.Engine.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +13,7 @@ public class MainFrame extends JFrame {
 
     private JPanel container;
 
-    private JPanel gamePane;
+    private GameEngine gamePane;
     private JPanel ctrlPane;
     private JButton startBtn;
     private JButton stopBtn;
@@ -49,7 +51,7 @@ public class MainFrame extends JFrame {
 
     private void initComponents() {
 
-        gamePane = new JPanel();
+        gamePane = new GameEngine();
         ctrlPane = new JPanel();
         startBtn = new JButton("开始");
         stopBtn = new JButton("停止");
@@ -60,10 +62,6 @@ public class MainFrame extends JFrame {
         stopBtn.setPreferredSize(new Dimension(100, 30));
         restartBtn.setPreferredSize(new Dimension(100, 30));
         pauseBtn.setPreferredSize(new Dimension(100, 30));
-
-        gamePane.setPreferredSize(new Dimension(350, 350));
-        gamePane.setSize(new Dimension(350, 350));
-        gamePane.setBackground(Color.black);
 
         ctrlPane.setPreferredSize(new Dimension(150, 350));
         ctrlPane.setSize(new Dimension(150, 350));
