@@ -61,7 +61,7 @@ public class GameEngine extends JPanel {
     }
 
     private void initSnake() {
-        snake = new SnakeNode(this, 4);
+        snake = new SnakeNode(this, 6, NODE_NUM / 2, NODE_NUM / 2, SnakeNode.TO_NORTH);
         SnakeNode head = snake;
         while (head != null) {
             Nodes[head.locationX][head.locationY].add(head);
@@ -71,15 +71,17 @@ public class GameEngine extends JPanel {
     }
 
     public void move(int toward) {
-        snake.changeToward(toward);
-        snake.moveToward();
-        SnakeNode head = snake;
-        while (head != null) {
-            Nodes[head.preX][head.preY].removeAll();
-            Nodes[head.locationX][head.locationY].add(head);
-            head = head.nextNode;
+        boolean hasChanged = snake.changeToward(toward);
+        if(hasChanged) {
+            snake.moveToward();
+            SnakeNode head = snake;
+            while (head != null && head.locationX >= 0 && head.locationX <= 49 && head.locationY >= 0 && head.locationY <= 49) {
+                Nodes[head.preX][head.preY].removeAll();
+                Nodes[head.locationX][head.locationY].add(head);
+                head = head.nextNode;
+            }
+            this.updateUI();
         }
-        this.updateUI();
     }
 
     public void reInit() {

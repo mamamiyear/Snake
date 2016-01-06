@@ -15,24 +15,23 @@ public class SnakeNode extends JPanel {
     private static final int HEIGTH = 10;
 
     public static final int TO_EAST = 1;
-    public static final int TO_WEST = 2;
-    public static final int TO_SOUTH = 3;
-    public static final int TO_NORTH = 4;
+    public static final int TO_WEST = -1;
+    public static final int TO_SOUTH = 2;
+    public static final int TO_NORTH = -2;
     private int toward;
 
     public static final String HEAD = "Head";
     public static final String BODY = "Body";
-    public static final String FOOD = "Food";
     private String part;
 
     public static final Color HEAD_COLOR = Color.RED;
     public static final Color BODY_COLOR = Color.GRAY;
-    public static final Color FOOD_COLOR = Color.GREEN;
+
     private Color color;
 
     public static final Border HEAD_BORDER = new LineBorder(HEAD_COLOR);
     public static final Border BODY_BORDER = new LineBorder(BODY_COLOR);
-    public static final Border FOOD_BORDER = new LineBorder(FOOD_COLOR);
+
     private Border border;
 
     public SnakeNode preNode;
@@ -61,11 +60,36 @@ public class SnakeNode extends JPanel {
         preY = locationY;
         this.setBackground(color);
         this.setBorder(border);
-        if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength);
+        if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, TO_NORTH);
         else nextNode = null;
     }
 
-    private SnakeNode(GameEngine ground, SnakeNode pre, int index, int length) {
+    public SnakeNode(GameEngine ground, int length, int locaX, int locaY, int to) {
+        myGround = ground;
+        preNode = null;
+        snakeLength = length;
+        myIndex = 0;
+        part = HEAD;
+        color = HEAD_COLOR;
+        border = HEAD_BORDER;
+        locationX = locaX;
+        locationY = locaY;
+        System.out.println("Head location is " + this.locationX + ", " + this.locationY);
+        preX = locationX;
+        preY = locationY;
+        if (to != TO_EAST && to != TO_WEST && to != TO_SOUTH && to != TO_NORTH) {
+            toward = 0;
+            System.out.println("方向在初始化时设置错误");
+        } else {
+            toward = to;
+        }
+        this.setBackground(color);
+        this.setBorder(border);
+        if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, to);
+        else nextNode = null;
+    }
+
+    private SnakeNode(GameEngine ground, SnakeNode pre, int index, int length, int to) {
         myGround = ground;
         preNode = pre;
         snakeLength = length;
@@ -73,22 +97,21 @@ public class SnakeNode extends JPanel {
         part = BODY;
         color = BODY_COLOR;
         border = BODY_BORDER;
-        locationX = pre.locationX + 1;
-        locationY = pre.locationY;
+        switch (to) {
+            case TO_EAST: locationY = pre.locationY - 1;locationX = pre.locationX; break;
+            case TO_WEST: locationY = pre.locationY + 1;locationX = pre.locationX; break;
+            case TO_SOUTH: locationX = pre.locationX - 1;locationY = pre.locationY; break;
+            case TO_NORTH: locationX = pre.locationX + 1;locationY = pre.locationY; break;
+            default: System.out.println("移动方向错误"); break;
+        }
+        System.out.println("No." + this.myIndex + " body's location is " + this.locationX + ", " + this.locationY);
         preX = locationX;
         preY = locationY;
         this.setBackground(color);
         this.setBorder(border);
-        if (myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength);
+        if (myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, to);
         else nextNode = null;
 
-    }
-
-    public void moveToNorth() {
-        preX = locationX;
-        preY = locationY;
-        locationX = locationX - 1;
-        fellowPreNode(this);
     }
 
     private void fellowPreNode(SnakeNode thisNode) {
@@ -106,27 +129,21 @@ public class SnakeNode extends JPanel {
         preX = locationX;
         preY = locationY;
         switch (toward) {
-            case TO_EAST:
-                locationY++;
-                break;
-            case TO_WEST:
-                locationY--;
-                break;
-            case TO_SOUTH:
-                locationX++;
-                break;
-            case TO_NORTH:
-                locationX--;
-                break;
-            default:
-                System.out.println("移动方向错误");
-                break;
+            case TO_EAST: locationY++; break;
+            case TO_WEST: locationY--; break;
+            case TO_SOUTH: locationX++; break;
+            case TO_NORTH: locationX--; break;
+            default: System.out.println("移动方向错误"); break;
         }
         fellowPreNode(this);
     }
 
-    public void changeToward(int to) {
+    public boolean changeToward(int to) {
+
+        if (to != TO_EAST && to != TO_WEST && to != TO_SOUTH && to != TO_NORTH) return false;
+        if (to == -toward) return false;
         toward = to;
+        return true;
     }
 
 }
