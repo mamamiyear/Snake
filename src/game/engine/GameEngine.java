@@ -13,34 +13,25 @@ public class GameEngine extends JPanel {
     public final int NODE_NUM = SIDE_LENGTH / 10;
 
     private SnakeNode snake;
-
     private GroundNode[][] Nodes;
 
-
-
     public GameEngine() {
-
         init();
-
     }
 
     private void init() {
-
         /*初始化引擎*/
         this.setPreferredSize(new Dimension(SIDE_LENGTH, SIDE_LENGTH));
         this.setSize(new Dimension(SIDE_LENGTH, SIDE_LENGTH));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.setBackground(Color.black);
+//        this.setBackground(Color.black);
         this.removeAll();
         /*初始化引擎完成*/
-
-
         initGround();
         initSnake();
     }
 
     private void initGround() {
-
         /*初始化场地*/
         Nodes = new GroundNode[35][35];
         for (int i = 0; i < Nodes.length; i++) {
@@ -73,16 +64,13 @@ public class GameEngine extends JPanel {
         snake = new SnakeNode(this, 4);
         SnakeNode head = snake;
         while (head != null) {
-//            System.out.println(head.myIndex + "的 locationX 和 locationY 为：" + head.locationX + "----" + head.locationY);
             Nodes[head.locationX][head.locationY].add(head);
             head = head.nextNode;
         }
-
         this.updateUI();
     }
 
     public void move(int toward) {
-
         snake.changeToward(toward);
         snake.moveToward();
         SnakeNode head = snake;
@@ -92,11 +80,9 @@ public class GameEngine extends JPanel {
             head = head.nextNode;
         }
         this.updateUI();
-
     }
 
     public void reInit() {
-
         SnakeNode head = snake;
         while (head != null) {
             Nodes[head.locationX][head.locationY].removeAll();

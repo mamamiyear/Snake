@@ -27,7 +27,6 @@ public class GroundNode extends JPanel {
 
 
     public GroundNode() {
-
         super();
         this.setSize(new Dimension(WIDTH, HEIGTH));
         this.setPreferredSize(new Dimension(WIDTH, HEIGTH));
@@ -35,7 +34,6 @@ public class GroundNode extends JPanel {
     }
 
     public void setNeighbourNode(int location, GroundNode value) {
-
         switch (location) {
             case 11:
                 upNode = value;

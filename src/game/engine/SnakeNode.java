@@ -66,7 +66,6 @@ public class SnakeNode extends JPanel {
     }
 
     private SnakeNode(GameEngine ground, SnakeNode pre, int index, int length) {
-
         myGround = ground;
         preNode = pre;
         snakeLength = length;
