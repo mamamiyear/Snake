@@ -1,10 +1,13 @@
 package game.gui;
 
 import game.engine.GameEngine;
+import game.engine.SnakeNode;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * @author mamamiyear
@@ -27,8 +30,8 @@ public class MainFrame extends JFrame {
         super("Snake");
         initFrame();
         initComponents();
+        initKeyBoardListener();
         setVisible(true);
-
     }
 
     private void initFrame() {
@@ -85,9 +88,55 @@ public class MainFrame extends JFrame {
         startBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gamePane.move();
+                gamePane.requestFocus();
+                System.out.println("点击了“开始”按钮");
             }
         });
+        stopBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gamePane.reInit();
+                System.out.println("点击了“停止”按钮");
+            }
+        });
+        restartBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gamePane.reInit();
+                gamePane.requestFocus();
+                System.out.println("点击了“重新开始”按钮");
+            }
+        });
+        pauseBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pauseBtn.getText().equals("暂停")) {
+                    System.out.println("点击了“暂停”按钮");
+                    pauseBtn.setText("继续");
+                } else if (pauseBtn.getText().equals("继续")) {
+                    System.out.println("点击了“继续”按钮");
+                    gamePane.requestFocus();
+                    pauseBtn.setText("暂停");
+                }
+
+            }
+        });
+
+
+    }
+
+    private void initKeyBoardListener() {
+
+        gamePane.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) gamePane.move(SnakeNode.TO_EAST);
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) gamePane.move(SnakeNode.TO_WEST);
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) gamePane.move(SnakeNode.TO_SOUTH);
+                if (e.getKeyCode() == KeyEvent.VK_UP) gamePane.move(SnakeNode.TO_NORTH);
+            }
+        });
+
 
     }
 

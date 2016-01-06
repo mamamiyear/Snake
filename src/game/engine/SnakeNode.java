@@ -86,15 +86,48 @@ public class SnakeNode extends JPanel {
     }
 
     public void moveToNorth() {
-
         preX = locationX;
         preY = locationY;
         locationX = locationX - 1;
-        if (this.nextNode != null) {
-            this.nextNode.moveToNorth();
+        fellowPreNode(this);
+    }
+
+    private void fellowPreNode(SnakeNode thisNode) {
+        if (thisNode.nextNode != null) {
+            SnakeNode next = thisNode.nextNode;
+            next.preX = next.locationX;
+            next.preY = next.locationY;
+            next.locationX = thisNode.preX;
+            next.locationY = thisNode.preY;
+            fellowPreNode(next);
         }
+    }
 
+    public void moveToward() {
+        preX = locationX;
+        preY = locationY;
+        switch (toward) {
+            case TO_EAST:
+                locationY++;
+                break;
+            case TO_WEST:
+                locationY--;
+                break;
+            case TO_SOUTH:
+                locationX++;
+                break;
+            case TO_NORTH:
+                locationX--;
+                break;
+            default:
+                System.out.println("移动方向错误");
+                break;
+        }
+        fellowPreNode(this);
+    }
 
+    public void changeToward(int to) {
+        toward = to;
     }
 
 }

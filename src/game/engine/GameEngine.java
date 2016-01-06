@@ -34,6 +34,13 @@ public class GameEngine extends JPanel {
         this.removeAll();
         /*初始化引擎完成*/
 
+
+        initGround();
+        initSnake();
+    }
+
+    private void initGround() {
+
         /*初始化场地*/
         Nodes = new GroundNode[35][35];
         for (int i = 0; i < Nodes.length; i++) {
@@ -60,8 +67,6 @@ public class GameEngine extends JPanel {
             }
         }
         /*初始化场地完成*/
-
-        initSnake();
     }
 
     private void initSnake() {
@@ -70,25 +75,34 @@ public class GameEngine extends JPanel {
         while (head != null) {
 //            System.out.println(head.myIndex + "的 locationX 和 locationY 为：" + head.locationX + "----" + head.locationY);
             Nodes[head.locationX][head.locationY].add(head);
-            System.out.println(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName());
             head = head.nextNode;
         }
+
+        this.updateUI();
     }
 
-    public void move() {
+    public void move(int toward) {
 
-//        snake.moveToNorth();
-        SnakeNode head = new SnakeNode(this, 1);
+        snake.changeToward(toward);
+        snake.moveToward();
+        SnakeNode head = snake;
         while (head != null) {
-//            System.out.println(head.myIndex + "的preX 和 preY 为：" + head.preX + "----" + head.preY);
-//            System.out.println(head.myIndex + "的 locationX 和 locationY 为：" + head.locationX + "----" + head.locationY);
-//            Nodes[head.preX][head.preY].removeAll();
-//            Nodes[head.locationX][head.locationY].add(new SnakeNode(this, 1));
-            Nodes[0][0].add(head);
-            System.out.println(Nodes[0][0].getComponent(0).getClass().getName());
+            Nodes[head.preX][head.preY].removeAll();
+            Nodes[head.locationX][head.locationY].add(head);
             head = head.nextNode;
         }
+        this.updateUI();
 
+    }
+
+    public void reInit() {
+
+        SnakeNode head = snake;
+        while (head != null) {
+            Nodes[head.locationX][head.locationY].removeAll();
+            head = head.nextNode;
+        }
+        initSnake();
     }
 
 
