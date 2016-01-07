@@ -83,7 +83,9 @@ public class MainFrame extends JFrame {
         startBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.putFood();
                 gamePane.requestFocus();
+                gamePane.updateUI();
                 System.out.println("点击了“开始”按钮");
             }
         });
@@ -91,14 +93,17 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gamePane.reInit();
+                gamePane.updateUI();
                 System.out.println("点击了“停止”按钮");
             }
         });
         restartBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.putFood();
                 gamePane.reInit();
                 gamePane.requestFocus();
+                gamePane.updateUI();
                 System.out.println("点击了“重新开始”按钮");
             }
         });
@@ -113,6 +118,7 @@ public class MainFrame extends JFrame {
                     gamePane.requestFocus();
                     pauseBtn.setText("暂停");
                 }
+                gamePane.updateUI();
             }
         });
     }

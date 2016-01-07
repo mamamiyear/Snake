@@ -11,14 +11,14 @@ import java.awt.*;
  */
 public class SnakeNode extends JPanel {
 
-    private static final int WIDTH = 10;
-    private static final int HEIGTH = 10;
+    private static final int SIDE_LEGHT = 10;
 
     public static final int TO_EAST = 1;
     public static final int TO_WEST = -1;
     public static final int TO_SOUTH = 2;
     public static final int TO_NORTH = -2;
-    private int toward;
+    private int pretoward;
+    public int toward;
 
     public static final String HEAD = "Head";
     public static final String BODY = "Body";
@@ -26,12 +26,10 @@ public class SnakeNode extends JPanel {
 
     public static final Color HEAD_COLOR = Color.RED;
     public static final Color BODY_COLOR = Color.GRAY;
-
     private Color color;
 
     public static final Border HEAD_BORDER = new LineBorder(HEAD_COLOR);
     public static final Border BODY_BORDER = new LineBorder(BODY_COLOR);
-
     private Border border;
 
     public SnakeNode preNode;
@@ -58,6 +56,8 @@ public class SnakeNode extends JPanel {
         locationY = myGround.NODE_NUM / 2;
         preX = locationX;
         preY = locationY;
+        this.setSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
+        this.setPreferredSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
         this.setBackground(color);
         this.setBorder(border);
         if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, TO_NORTH);
@@ -83,9 +83,12 @@ public class SnakeNode extends JPanel {
         } else {
             toward = to;
         }
+        pretoward = toward;
+        this.setSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
+        this.setPreferredSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
         this.setBackground(color);
         this.setBorder(border);
-        if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, to);
+        if(myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, toward);
         else nextNode = null;
     }
 
@@ -98,15 +101,17 @@ public class SnakeNode extends JPanel {
         color = BODY_COLOR;
         border = BODY_BORDER;
         switch (to) {
-            case TO_EAST: locationY = pre.locationY - 1;locationX = pre.locationX; break;
-            case TO_WEST: locationY = pre.locationY + 1;locationX = pre.locationX; break;
-            case TO_SOUTH: locationX = pre.locationX - 1;locationY = pre.locationY; break;
-            case TO_NORTH: locationX = pre.locationX + 1;locationY = pre.locationY; break;
+            case TO_EAST: locationY = preNode.locationY - 1;locationX = preNode.locationX; break;
+            case TO_WEST: locationY = preNode.locationY + 1;locationX = preNode.locationX; break;
+            case TO_SOUTH: locationX = preNode.locationX - 1;locationY = preNode.locationY; break;
+            case TO_NORTH: locationX = preNode.locationX + 1;locationY = preNode.locationY; break;
             default: System.out.println("移动方向错误"); break;
         }
         System.out.println("No." + this.myIndex + " body's location is " + this.locationX + ", " + this.locationY);
         preX = locationX;
         preY = locationY;
+        toward = to;
+        pretoward = toward;
         this.setBackground(color);
         this.setBorder(border);
         if (myIndex < snakeLength - 1) nextNode = new SnakeNode(myGround, this, myIndex + 1, snakeLength, to);
@@ -119,13 +124,16 @@ public class SnakeNode extends JPanel {
             SnakeNode next = thisNode.nextNode;
             next.preX = next.locationX;
             next.preY = next.locationY;
+            next.pretoward = next.toward;
             next.locationX = thisNode.preX;
             next.locationY = thisNode.preY;
+            next.toward = thisNode.pretoward;
             fellowPreNode(next);
         }
     }
 
-    public void moveToward() {
+    public boolean moveToward() {
+        if(toward != TO_EAST && toward != TO_WEST && toward != TO_SOUTH && toward != TO_NORTH) return false;
         preX = locationX;
         preY = locationY;
         switch (toward) {
@@ -133,17 +141,42 @@ public class SnakeNode extends JPanel {
             case TO_WEST: locationY--; break;
             case TO_SOUTH: locationX++; break;
             case TO_NORTH: locationX--; break;
-            default: System.out.println("移动方向错误"); break;
         }
         fellowPreNode(this);
+        return true;
+    }
+
+    public void moveBack() {
+        locationX = preX;
+        locationY = preY;
+        SnakeNode next = nextNode;
+        while (next != null) {
+            next.preNode.preX = next.locationX;
+            next.preNode.preY = next.locationY;
+            next.locationX = next.preX;
+            next.locationY = next.preY;
+            next = next.nextNode;
+        }
     }
 
     public boolean changeToward(int to) {
 
         if (to != TO_EAST && to != TO_WEST && to != TO_SOUTH && to != TO_NORTH) return false;
         if (to == -toward) return false;
+        pretoward = toward;
         toward = to;
         return true;
+    }
+
+    public void addOneNode() {
+        SnakeNode lastNode = this;
+        lastNode.snakeLength++;
+        while (lastNode.nextNode != null) {
+            lastNode = lastNode.nextNode;
+            lastNode.snakeLength++;
+        }
+        lastNode.nextNode = new SnakeNode(lastNode.myGround, lastNode, lastNode.myIndex + 1, lastNode.snakeLength, lastNode.toward);
+
     }
 
 }

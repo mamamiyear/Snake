@@ -11,8 +11,7 @@ import java.awt.*;
  */
 public class GroundNode extends JPanel {
 
-    private static final int WIDTH = 10;
-    private static final int HEIGTH = 10;
+    public static final int SIDE_LEGHT = 10;
 
     public static final Border LAND_BORDER = new LineBorder(Color.black, 1);
 
@@ -28,8 +27,8 @@ public class GroundNode extends JPanel {
 
     public GroundNode() {
         super();
-        this.setSize(new Dimension(WIDTH, HEIGTH));
-        this.setPreferredSize(new Dimension(WIDTH, HEIGTH));
+        this.setSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
+        this.setPreferredSize(new Dimension(SIDE_LEGHT, SIDE_LEGHT));
         this.setBorder(LAND_BORDER);
     }
 
