@@ -70,7 +70,7 @@ public class GameEngine extends JPanel {
     }
 
     private void initSnake() {
-        snake = new SnakeNode(this, 4);
+        snake = new SnakeNode(this, 9);
         SnakeNode head = snake;
         while (head != null) {
 //            System.out.println(head.myIndex + "的 locationX 和 locationY 为：" + head.locationX + "----" + head.locationY);
