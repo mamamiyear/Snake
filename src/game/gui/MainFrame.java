@@ -4,6 +4,7 @@ import game.engine.GameEngine;
 import game.engine.SnakeNode;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -26,7 +27,6 @@ public class MainFrame extends JFrame {
 
 
     public MainFrame() {
-
         super("Snake");
         initFrame();
         initComponents();
@@ -35,8 +35,6 @@ public class MainFrame extends JFrame {
     }
 
     private void initFrame() {
-
-
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         container = new JPanel();
@@ -50,11 +48,9 @@ public class MainFrame extends JFrame {
         this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
         System.out.println("The main window's width is " + this.getWidth() + " and height is " + this.getHeight());
         System.out.println("The main window's preferredWidth is " + this.getPreferredSize().getWidth() + " and preferredHeight is " + this.getPreferredSize().getHeight());
-
     }
 
     private void initComponents() {
-
         gamePane = new GameEngine();
         ctrlPane = new JPanel();
         startBtn = new JButton("开始");
@@ -72,6 +68,7 @@ public class MainFrame extends JFrame {
         ctrlPane.setSize(new Dimension(150, 350));
         ctrlPane.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 46));
         ctrlPane.setBackground(Color.GREEN);
+        ctrlPane.setBorder(new LineBorder(Color.black, 1));
 
         ctrlPane.add(startBtn);
         ctrlPane.add(stopBtn);
@@ -80,15 +77,15 @@ public class MainFrame extends JFrame {
 
         container.add(gamePane);
         container.add(ctrlPane);
-
     }
 
     private void initButtonFunction() {
-
         startBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.putFood();
                 gamePane.requestFocus();
+                gamePane.updateUI();
                 System.out.println("点击了“开始”按钮");
             }
         });
@@ -96,14 +93,17 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gamePane.reInit();
+                gamePane.updateUI();
                 System.out.println("点击了“停止”按钮");
             }
         });
         restartBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.putFood();
                 gamePane.reInit();
                 gamePane.requestFocus();
+                gamePane.updateUI();
                 System.out.println("点击了“重新开始”按钮");
             }
         });
@@ -118,15 +118,12 @@ public class MainFrame extends JFrame {
                     gamePane.requestFocus();
                     pauseBtn.setText("暂停");
                 }
-
+                gamePane.updateUI();
             }
         });
-
-
     }
 
     private void initKeyBoardListener() {
-
         gamePane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -136,8 +133,5 @@ public class MainFrame extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_UP) gamePane.move(SnakeNode.TO_NORTH);
             }
         });
-
-
     }
-
 }
