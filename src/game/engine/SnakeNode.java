@@ -179,7 +179,6 @@ public class SnakeNode extends JPanel {
             lastNode.snakeLength++;
         }
         lastNode.nextNode = new SnakeNode(lastNode.myGround, lastNode, lastNode.myIndex + 1, lastNode.snakeLength, lastNode.toward);
-
     }
 
 }

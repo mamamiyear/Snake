@@ -72,7 +72,7 @@ public class MainFrame extends JFrame {
 
         ctrlPane.add(startBtn);
         ctrlPane.add(stopBtn);
-        ctrlPane.add(pauseBtn);
+//        ctrlPane.add(pauseBtn);
         ctrlPane.add(restartBtn);
 
         container.add(gamePane);
@@ -101,8 +101,10 @@ public class MainFrame extends JFrame {
         restartBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.gameStop();
                 gamePane.putFood();
                 gamePane.reInit();
+                gamePane.gameStart();
                 gamePane.requestFocus();
                 gamePane.updateUI();
                 System.out.println("点击了“重新开始”按钮");

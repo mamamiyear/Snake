@@ -197,16 +197,30 @@ public class GameEngine extends JPanel {
 
     public void putFood() {
 
-        int foodX = new Random().nextInt(NODE_NUM);
-        int foodY = new Random().nextInt(NODE_NUM);
+        boolean isValid = false;
+        int foodX = 0;
+        int foodY = 0;
         /*
         Some Sentence
         这里为判断语句，判断foodX， foodY是否为snake所在地
          */
+        while (!isValid) {
+            foodX = new Random().nextInt(NODE_NUM);
+            foodY = new Random().nextInt(NODE_NUM);
+            SnakeNode head = snake;
+            while (head != null) {
+                if (foodX == head.locationX && foodY == head.locationY) {
+                    isValid = false;
+                    break;
+                } else {
+                    isValid = true;
+                    head = head.nextNode;
+                }
+            }
+        }
         food = new FoodNode(foodX, foodY);
         Nodes[food.locationX][food.locationY].removeAll();
         Nodes[food.locationX][food.locationY].add(food);
-
     }
 
     public void gameStart() {
@@ -215,6 +229,24 @@ public class GameEngine extends JPanel {
 
     public void gameStop() {
         timer.cancel();
+    }
+
+    private class Pair {
+        public int X;
+        public int Y;
+
+        public Pair(int x, int y) {
+            X = x;
+            Y = y;
+        }
+
+        public boolean equals(Pair p) {
+            if (X == p.X && Y == p.Y) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
 
