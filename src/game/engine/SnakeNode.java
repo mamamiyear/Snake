@@ -149,12 +149,15 @@ public class SnakeNode extends JPanel {
     public void moveBack() {
         locationX = preX;
         locationY = preY;
+        toward = pretoward;
         SnakeNode next = nextNode;
         while (next != null) {
             next.preNode.preX = next.locationX;
             next.preNode.preY = next.locationY;
+            next.preNode.pretoward = next.toward;
             next.locationX = next.preX;
             next.locationY = next.preY;
+            next.toward = next.pretoward;
             next = next.nextNode;
         }
     }

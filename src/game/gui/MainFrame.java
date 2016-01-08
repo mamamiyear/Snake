@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
         startBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gamePane.putFood();
+                gamePane.gameStart();
                 gamePane.requestFocus();
                 gamePane.updateUI();
                 System.out.println("点击了“开始”按钮");
@@ -92,6 +92,7 @@ public class MainFrame extends JFrame {
         stopBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gamePane.gameStop();
                 gamePane.reInit();
                 gamePane.updateUI();
                 System.out.println("点击了“停止”按钮");
@@ -127,10 +128,19 @@ public class MainFrame extends JFrame {
         gamePane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                //自动
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) gamePane.changeSnakeToward(SnakeNode.TO_EAST);
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) gamePane.changeSnakeToward(SnakeNode.TO_WEST);
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) gamePane.changeSnakeToward(SnakeNode.TO_SOUTH);
+                if (e.getKeyCode() == KeyEvent.VK_UP) gamePane.changeSnakeToward(SnakeNode.TO_NORTH);
+
+                /*
+                //手动
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) gamePane.move(SnakeNode.TO_EAST);
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) gamePane.move(SnakeNode.TO_WEST);
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) gamePane.move(SnakeNode.TO_SOUTH);
                 if (e.getKeyCode() == KeyEvent.VK_UP) gamePane.move(SnakeNode.TO_NORTH);
+                */
             }
         });
     }

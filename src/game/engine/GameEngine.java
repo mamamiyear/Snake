@@ -2,7 +2,8 @@ package game.engine;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.util.*;
+import java.util.Timer;
 
 /**
  * @author mamamiyear
@@ -15,9 +16,15 @@ public class GameEngine extends JPanel {
 
     private static final int initSnakeLength = 5;
 
+    private TimerTask autoMove;
+    private java.util.Timer timer;
+    private long timePeriod;
+
     private SnakeNode snake;
     private FoodNode food;
     private GroundNode[][] Nodes;
+
+    private LinkedList<Integer> operationBuffer;
 
 
 
@@ -31,11 +38,12 @@ public class GameEngine extends JPanel {
         this.setPreferredSize(new Dimension(SIDE_LENGTH, SIDE_LENGTH));
         this.setSize(new Dimension(SIDE_LENGTH, SIDE_LENGTH));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//        this.setBackground(Color.black);
         this.removeAll();
+        operationBuffer = new LinkedList<>();
         /*初始化引擎完成*/
         initGround();
         initSnake();
+        initFood();
     }
 
     private void initGround() {
@@ -68,7 +76,7 @@ public class GameEngine extends JPanel {
     }
 
     private void initSnake() {
-        snake = new SnakeNode(this, initSnakeLength, 0, 0, SnakeNode.TO_NORTH);
+        snake = new SnakeNode(this, initSnakeLength, 5, 5, SnakeNode.TO_NORTH);
         SnakeNode head = snake;
         while (head != null) {
             Nodes[head.locationX][head.locationY].add(head);
@@ -77,25 +85,49 @@ public class GameEngine extends JPanel {
         this.updateUI();
     }
 
-    public void move(int toward) {
-        boolean hasChanged = snake.changeToward(toward);
+    private void initFood() {
+        putFood();
+    }
+
+    private void initTimer() {
+        timePeriod = 100;
+        autoMove = new TimerTask() {
+            @Override
+            public void run() {
+                if (GameEngine.this.operationBuffer.isEmpty()) {
+                    GameEngine.this.move();
+                } else {
+                    GameEngine.this.move(GameEngine.this.operationBuffer.poll());
+                }
+            }
+        };
+        timer = new Timer();
+        timer.schedule(autoMove, timePeriod, timePeriod);
+    }
+
+    public void move() {
+        boolean hasChanged = snake.changeToward(snake.toward);
         if(hasChanged && snake.moveToward()) {
             SnakeNode head = snake;
             try {
-                Nodes[head.locationX][head.locationY].getComponent(0);
+                if(head.locationX <0 || head.locationX>=NODE_NUM || head.locationY <0 || head.locationY>=NODE_NUM) {
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    snake.moveBack();
+//                    System.out.println("moveback后");
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    return;
+                }
                 if ("game.engine.FoodNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
                     head.addOneNode();
                     putFood();
                 }
                 if ("game.engine.SnakeNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     snake.moveBack();
+//                    System.out.println("moveback后");
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     return;
                 }
-                if(head.locationX <0 || head.locationX>=NODE_NUM || head.locationY <0 || head.locationY>=NODE_NUM) {
-                    snake.moveBack();
-                    return;
-                }
-                System.out.println(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName());
             } catch (Exception ignored) {
             }
             while (head != null && head.locationX >= 0 && head.locationX < NODE_NUM && head.locationY >= 0 && head.locationY < NODE_NUM) {
@@ -103,7 +135,49 @@ public class GameEngine extends JPanel {
 //                System.out.println("第" + head.myIndex + "个部分的方向为 " + head.toward);
                 Nodes[head.locationX][head.locationY].removeAll();
                 Nodes[head.locationX][head.locationY].add(head);
-                Nodes[head.preX][head.preY].updateUI();
+                Nodes[head.locationX][head.locationY].updateUI();
+                head = head.nextNode;
+            }
+            this.updateUI();
+        }
+    }
+
+    public void changeSnakeToward(int toward) {
+        operationBuffer.offer(toward);
+//        snake.changeToward(toward);
+    }
+
+    public void move(int toward) {
+        boolean hasChanged = snake.changeToward(toward);
+        if(hasChanged && snake.moveToward()) {
+            SnakeNode head = snake;
+            try {
+                if(head.locationX <0 || head.locationX>=NODE_NUM || head.locationY <0 || head.locationY>=NODE_NUM) {
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    snake.moveBack();
+//                    System.out.println("moveback后");
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    return;
+                }
+                if ("game.engine.FoodNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
+                    head.addOneNode();
+                    putFood();
+                }
+                if ("game.engine.SnakeNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    snake.moveBack();
+//                    System.out.println("moveback后");
+//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+                    return;
+                }
+            } catch (Exception ignored) {
+            }
+            while (head != null && head.locationX >= 0 && head.locationX < NODE_NUM && head.locationY >= 0 && head.locationY < NODE_NUM) {
+//                System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
+//                System.out.println("第" + head.myIndex + "个部分的方向为 " + head.toward);
+                Nodes[head.locationX][head.locationY].removeAll();
+                Nodes[head.locationX][head.locationY].add(head);
+                Nodes[head.locationX][head.locationY].updateUI();
                 head = head.nextNode;
             }
             this.updateUI();
@@ -116,6 +190,7 @@ public class GameEngine extends JPanel {
             Nodes[head.locationX][head.locationY].removeAll();
             head = head.nextNode;
         }
+        Nodes[food.locationX][food.locationY].removeAll();
         initSnake();
         putFood();
     }
@@ -132,6 +207,14 @@ public class GameEngine extends JPanel {
         Nodes[food.locationX][food.locationY].removeAll();
         Nodes[food.locationX][food.locationY].add(food);
 
+    }
+
+    public void gameStart() {
+        initTimer();
+    }
+
+    public void gameStop() {
+        timer.cancel();
     }
 
 
