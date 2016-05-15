@@ -67,7 +67,7 @@ public class MainFrame extends JFrame {
         ctrlPane.setPreferredSize(new Dimension(150, 350));
         ctrlPane.setSize(new Dimension(150, 350));
         ctrlPane.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 46));
-        ctrlPane.setBackground(Color.GREEN);
+//        ctrlPane.setBackground(Color.GREEN);
         ctrlPane.setBorder(new LineBorder(Color.black, 1));
 
         ctrlPane.add(startBtn);

@@ -111,10 +111,7 @@ public class GameEngine extends JPanel {
             SnakeNode head = snake;
             try {
                 if(head.locationX <0 || head.locationX>=NODE_NUM || head.locationY <0 || head.locationY>=NODE_NUM) {
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     snake.moveBack();
-//                    System.out.println("moveback后");
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     return;
                 }
                 if ("game.engine.FoodNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
@@ -122,17 +119,12 @@ public class GameEngine extends JPanel {
                     putFood();
                 }
                 if ("game.engine.SnakeNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     snake.moveBack();
-//                    System.out.println("moveback后");
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     return;
                 }
             } catch (Exception ignored) {
             }
             while (head != null && head.locationX >= 0 && head.locationX < NODE_NUM && head.locationY >= 0 && head.locationY < NODE_NUM) {
-//                System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
-//                System.out.println("第" + head.myIndex + "个部分的方向为 " + head.toward);
                 Nodes[head.locationX][head.locationY].removeAll();
                 Nodes[head.locationX][head.locationY].add(head);
                 Nodes[head.locationX][head.locationY].updateUI();
@@ -144,7 +136,6 @@ public class GameEngine extends JPanel {
 
     public void changeSnakeToward(int toward) {
         operationBuffer.offer(toward);
-//        snake.changeToward(toward);
     }
 
     public void move(int toward) {
@@ -153,10 +144,7 @@ public class GameEngine extends JPanel {
             SnakeNode head = snake;
             try {
                 if(head.locationX <0 || head.locationX>=NODE_NUM || head.locationY <0 || head.locationY>=NODE_NUM) {
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     snake.moveBack();
-//                    System.out.println("moveback后");
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     return;
                 }
                 if ("game.engine.FoodNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
@@ -164,17 +152,12 @@ public class GameEngine extends JPanel {
                     putFood();
                 }
                 if ("game.engine.SnakeNode".equals(Nodes[head.locationX][head.locationY].getComponent(0).getClass().getName())) {
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     snake.moveBack();
-//                    System.out.println("moveback后");
-//                    System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
                     return;
                 }
             } catch (Exception ignored) {
             }
             while (head != null && head.locationX >= 0 && head.locationX < NODE_NUM && head.locationY >= 0 && head.locationY < NODE_NUM) {
-//                System.out.println("第" + head.myIndex + "个部分的locationX 和 locationY 分别为" + head.locationX + ", " + head.locationY);
-//                System.out.println("第" + head.myIndex + "个部分的方向为 " + head.toward);
                 Nodes[head.locationX][head.locationY].removeAll();
                 Nodes[head.locationX][head.locationY].add(head);
                 Nodes[head.locationX][head.locationY].updateUI();

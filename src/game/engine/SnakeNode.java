@@ -107,7 +107,7 @@ public class SnakeNode extends JPanel {
             case TO_NORTH: locationX = preNode.locationX + 1;locationY = preNode.locationY; break;
             default: System.out.println("移动方向错误"); break;
         }
-        System.out.println("No." + this.myIndex + " body's location is " + this.locationX + ", " + this.locationY);
+//        System.out.println("No." + this.myIndex + " body's location is " + this.locationX + ", " + this.locationY);
         preX = locationX;
         preY = locationY;
         toward = to;
